@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>⚙️ Admin Dashboard</h2>
+<h3>Users</h3><ul>
+{% for u in users %}<li>{{ u.username }} ({{ u.role }})</li>{% endfor %}
+</ul>
+<h3>All Cipher Entries</h3><ul>
+{% for e in entries %}
+  <li>{{ e.user.username }} → {{ e.cipher }}/{{ e.mode }} on {{ e.timestamp.strftime('%Y-%m-%d %H:%M') }}
+      {% if e.note %} — Note: {{ e.note }}{% endif %}
+  </li>
+{% endfor %}
+</ul>
+{% endblock %}

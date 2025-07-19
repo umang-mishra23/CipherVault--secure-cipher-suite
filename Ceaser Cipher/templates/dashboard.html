@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>📊 Dashboard</h2>
+<p>Welcome, <strong>{{ user.username }}</strong>! Here's your cipher history:</p>
+
+{% if user.history %}
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cipher</th>
+            <th>Mode</th>
+            <th>Input</th>
+            <th>Output</th>
+            <th>Time</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in user.history %}
+        <tr>
+            <td>{{ entry.id }}</td>
+            <td>{{ entry.cipher }}</td>
+            <td>{{ entry.mode }}</td>
+            <td>{{ entry.input_text[:30] }}{% if entry.input_text|length > 30 %}...{% endif %}</td>
+            <td>{{ entry.output_text[:30] }}{% if entry.output_text|length > 30 %}...{% endif %}</td>
+            <td>{{ entry.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td><a href="/delete/{{ entry.id }}">❌ Delete</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No history found yet.</p>
+{% endif %}
+
+<a href="/" style="display:block;margin-top:20px;">← Back to Cipher Tool</a>
+{% endblock %}

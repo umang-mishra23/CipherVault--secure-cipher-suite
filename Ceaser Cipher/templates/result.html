@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Result</h2>
+{% if mode == 'brute' %}
+    <p><strong>Cipher:</strong> {{ cipher|capitalize }}</p>
+
+    <ul>
+        {% for shift, text in results %}
+            <li><strong>Shift {{ shift }}:</strong> {{ text }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p><strong>Mode:</strong> {{ mode|capitalize }}</p>
+    <p><strong>Shift:</strong> {{ shift }}</p>
+    <p><strong>Original Text:</strong> {{ original }}</p>
+    <p><strong>Output:</strong> {{ output }}</p>
+{% endif %}
+<a href="/">← Go Back</a>
+{% endblock %}

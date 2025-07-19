@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>🔐 Cipher Tool</h2>
+<p>Encrypt or decrypt your message using powerful ciphers.</p>
+
+<form action="/result" method="POST">
+    <label for="text">Enter Text:</label>
+    <textarea name="text" id="text" rows="4" required></textarea>
+
+    <label for="cipher">Select Cipher:</label>
+    <select name="cipher" id="cipher" onchange="updateFields()">
+        <option value="caesar">Caesar Cipher</option>
+        <option value="vigenere">Vigenère Cipher</option>
+        <option value="base64">Base64</option>
+        <option value="aes">AES (Fernet)</option>
+    </select>
+
+    <label for="mode">Select Mode:</label>
+    <select name="mode" id="mode" onchange="updateFields()">
+        <option value="encrypt">Encrypt</option>
+        <option value="decrypt">Decrypt</option>
+        <option value="brute">Brute Force (Only Caesar)</option>
+    </select>
+
+    <div id="shiftInput">
+        <label for="shift">Shift (Caesar):</label>
+        <input type="number" name="shift" id="shift" min="0" max="25">
+    </div>
+
+    <div id="keywordInput" style="display: none;">
+        <label for="keyword">Keyword / Key:</label>
+        <input type="text" name="keyword" id="keyword" placeholder="Keyword or AES Key">
+        <button type="button" onclick="generateAESKey()">🔑 Generate AES Key</button>
+    </div>
+
+    <button type="submit">🚀 Run Cipher</button>
+</form>
+
+<script>
+function updateFields() {
+    let cipher = document.getElementById("cipher").value;
+    let mode = document.getElementById("mode").value;
+
+    document.getElementById("shiftInput").style.display =
+        (cipher === "caesar" && mode !== "brute") ? "block" : "none";
+    
+    document.getElementById("keywordInput").style.display =
+        (cipher === "vigenere" || cipher === "aes") ? "block" : "none";
+}
+updateFields();
+
+function generateAESKey() {
+    fetch('/generate-key')
+        .then(res => res.text())
+        .then(key => {
+            document.getElementById('keyword').value = key;
+        });
+}
+</script>
+{% endblock %}
